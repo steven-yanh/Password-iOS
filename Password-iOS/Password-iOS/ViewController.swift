@@ -9,11 +9,11 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    let loginView = PasswordField()
+    let passwordView = PasswordField()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        passwordView.delegate = self
         style()
         layout()
     }
@@ -27,18 +27,24 @@ extension ViewController {
     }
     func layout() {
         //add views
-        view.addSubview(loginView)
+        view.addSubview(passwordView)
         
         //toggle mask
-        loginView.translatesAutoresizingMaskIntoConstraints = false
+        passwordView.translatesAutoresizingMaskIntoConstraints = false
         
         //constraints
         NSLayoutConstraint.activate([
-            loginView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            loginView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            loginView.heightAnchor.constraint(equalToConstant: 200),
-            loginView.widthAnchor.constraint(equalToConstant: 250),
+            passwordView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            passwordView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            passwordView.heightAnchor.constraint(equalToConstant: 200),
+            passwordView.widthAnchor.constraint(equalToConstant: 250),
             
         ])
+    }
+}
+
+extension ViewController: UITextFieldDelegate {
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        
     }
 }

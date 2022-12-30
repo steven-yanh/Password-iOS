@@ -20,6 +20,13 @@ class PasswordField: UIView {
         let promptLabel = UILabel()
     
     
+    //delegate
+    weak var delegate: UITextFieldDelegate? {
+        didSet {
+            passwordField.delegate = delegate
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -39,7 +46,6 @@ class PasswordField: UIView {
 
 extension PasswordField {
     func setup() {
-        passwordField.delegate = self
         eyeButton.addTarget(self, action: #selector(toggleSecureMode), for: .touchUpInside)
         eyeButton.setImage(UIImage(systemName: "eye.circle"), for: .normal)
         lockImageView.image = UIImage(systemName: "lock.fill")
@@ -51,6 +57,8 @@ extension PasswordField {
         
         HStack.axis = .horizontal
         HStack.spacing = 8
+        
+        lockImageView.contentMode = .scaleAspectFit
         
         passwordField.placeholder = "New Password"
         passwordField.isSecureTextEntry = true
@@ -91,23 +99,19 @@ extension PasswordField {
         NSLayoutConstraint.activate([
             divider.leadingAnchor.constraint(equalTo: leadingAnchor),
             divider.trailingAnchor.constraint(equalTo: trailingAnchor),
-            divider.heightAnchor.constraint(equalToConstant: 3),
+            divider.heightAnchor.constraint(equalToConstant: 2),
+            
+            eyeButton.widthAnchor.constraint(equalToConstant: 20),
 
         ])
     }
 }
-//MARK: - TextFieldDelegate
-extension PasswordField: UITextFieldDelegate {
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        return true
-    }
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        
-    }
-}
+
 //MARK: - Action
 extension PasswordField {
     @objc func toggleSecureMode() {
-        
+        let targetImage = eyeButton.imageView?.image == UIImage(systemName: "eye.circle") ? "eye.slash.circle" : "eye.circle"
+        passwordField.isSecureTextEntry.toggle()
+        eyeButton.setImage(UIImage(systemName: targetImage), for: .normal)
     }
 }
